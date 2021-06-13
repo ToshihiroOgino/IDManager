@@ -79,7 +79,7 @@ namespace DiscordBot
 		}
 
 		[Command("vc")]
-		[Summary("指定したVoice Channelに接続しているユーザーのidを一括表示する")]
+		[Summary("コマンドを実行したユーザーが接続しているボイスチャンネル内のユーザーの登録情報を一括表示する")]
 		public async Task VC()
 		{
 			var user = Program._client.GetUser(Program.UserID);
