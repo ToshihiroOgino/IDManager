@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Discord;
@@ -22,8 +22,15 @@ namespace DiscordBot
 			{
 				string service = text.Substring(0, text.IndexOf(" "));
 				string servid = text.Substring(text.IndexOf(" ") + 1);
-				JsonManager.AddUserData(id, service, servid);
-				await ReplyAsync("情報を追加しました");
+				try
+				{
+					JsonManager.AddUserData(id, service, servid);
+					await ReplyAsync("情報を追加しました");
+				}
+				catch
+				{
+					await ReplyAsync(service + "に関する情報が既に登録されています。IDを更新したい場合は一旦既存の情報を削除してください。");
+				}
 			}
 			catch
 			{
@@ -62,13 +69,18 @@ namespace DiscordBot
 					string result = "```Discord : " + user.Username.ToString() + "\n";
 					foreach (var (key, value) in UserData)
 					{
+						if (key == "EmptyEmptyEmptyEmptyEmpty")
+						{
+							await ReplyAsync("このユーザーはまだ情報を登録していません");
+							return;
+						}
 						result += key + " : " + value + "\n";
 					}
 					result += "```";
 					await ReplyAsync(result);
 				}
 				else
-					await ReplyAsync(user.Username + " はまだ情報を登録していません");
+					await ReplyAsync("このユーザーはまだ情報を登録していません");
 
 				Console.WriteLine("show UserData (ID:{0})", target);
 			}
